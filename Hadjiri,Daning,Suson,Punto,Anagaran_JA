@@ -1,0 +1,100 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+struct Question {
+    string question;
+    string options[3];
+    char correctOption;
+};
+
+class QuizGame {
+public:
+    void quiz() {
+    	cout<<"\t\t\t\t\t{QUIZ GAME}\n";
+        Question questions[] = {
+            // Add your questions here
+        {"1.Which of the following best describes a stack data structure?", {"A linear data structure that follows the Last-In-First-Out (LIFO) principle.", "A linear data structure that follows the First-In-First-Out (FIFO) principle.", "A non-linear data structure that allows random access to elements."},'A'},
+        {"2.What operation adds an element to the top of a stack?", {"pop", "peek", "push"},'C'},
+        {"3.What operation removes and returns the element at the top of a stack?", {"push", "peek", "pop"},'C'},
+        {"4.What happens if you try to pop an element from an empty stack?",{"A new element is automatically added to the stack.","The program continues without any error.","An error (like a stack underflow) typically occurs."},'C'},
+        {"5.Which of the following real-world examples best illustrates a stack?",{"A queue of people waiting in line at a store.","A pile of plates where you can only add or remove plates from the top.","A deck of cards laid out on a table."},'B'},
+        {"6.Which of the following best describes a queue data structure?",{"Last-In-First-Out(LIFO)","First-In-First-Out(FIFO)","None of the above"},'B'},
+        {"7.What operation adds an element to the rear of a queue?",{"Dequeue","Peek","Enqueue"	},'C'},
+        {"8.What operation removes and return the element at the front of a queue?",{"Enqueue","Peek","Dequeue"},'C'},
+        {"9.What happends if you try to dequeue an element from an empty queue?",{"Automatically added to the queue","Continues without errors","An error(like a queue underflow)"},'C'},
+        {"10.Which of the following real-world examples best illustrates a queue?",{"Stack of book where you can only add or remove book","line of people waiting to buy","Set of cards arranged in a circle"},	'B'}
+	
+            // Add more questions...
+        };
+
+        int score = 0;
+
+        int totalQuestions = sizeof(questions) / sizeof(questions[0]);
+        for (int i = 0; i < totalQuestions; ++i) {
+            cout << questions[i].question << endl;
+            cout << "A. " << questions[i].options[0] << endl;
+            cout << "B. " << questions[i].options[1] << endl;
+            cout << "C. " << questions[i].options[2] << endl;
+
+            char answer;
+            while (true) {
+                cout << "Enter your answer (A, B, or C): ";
+                cin >> answer;
+
+                // Check if input is a single character
+                if (cin.fail() || cin.get() != '\n') {
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                    cout << "Invalid input. Please enter a single character (A, B, or C)." << endl;
+                }
+                // Check if input is a letter
+                else if (!isalpha(answer)) {
+                    cout << "Invalid input. Please enter a letter (A, B, or C)." << endl;
+                }
+                // Check if input is A, B, or C
+                else if (toupper(answer) != 'A' && toupper(answer) != 'B' && toupper(answer) != 'C') {
+                    cout << "Invalid input. Please enter A, B, or C." << endl;
+                } else {
+                    break;
+                }
+            }
+
+            answer = toupper(answer);
+
+            if (answer == questions[i].correctOption) {
+                cout << "Correct!" << endl;
+                score++;
+            } else {
+                cout << "Incorrect. The correct answer was " << questions[i].correctOption << "." << endl;
+            }
+            cout << endl;
+        }
+
+        // Display final score
+        cout << "Quiz finished! Your final score is " << score << " out of " << totalQuestions << "." << endl;
+    }
+};
+
+int main() {
+    QuizGame game;
+    game.quiz();
+
+    cout << "Answer key:\n";
+    cout << "1. A\n";
+    cout << "2. C\n";
+    cout << "3. C\n";
+    cout << "4. C\n";
+    cout << "5. B\n";
+    cout << "6. B\n";
+    cout << "7. C\n";
+    cout << "8. C\n";
+    cout << "9. C\n";
+    cout << "10. B\n";
+
+
+    return 0;
+}
+
