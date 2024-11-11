@@ -1,0 +1,108 @@
+#include <iostream>
+#include <stack>
+#include <queue>
+#include <string>
+
+using namespace std;
+
+// Structure for quiz questions
+struct Question {
+    string query;
+    string options[4];
+    char correctAnswer;
+};
+
+// Function to display quiz questions
+void displayQuestion(Question q) {
+    cout << q.query << endl;
+    for (int i = 0; i < 4; i++) {
+        cout << char('a' + i) << ". " << q.options[i] << endl;
+    }
+}
+
+// Function to check answer
+bool checkAnswer(char answer, char correctAnswer) {
+    return tolower(answer) == tolower(correctAnswer);
+}
+
+// Function to handle invalid input
+void handleInvalidInput() {
+    cout << "Invalid input. Please enter a letter (a-d)." << endl;
+}
+
+// Function to display menu
+void displayMenu() {
+    cout << "Quiz Game Menu:" << endl;
+    cout << "1. Start Quiz" << endl;
+    cout << "2. Exit" << endl;
+    cout << "Enter your choice: ";
+}
+
+int main() {
+    // Quiz questions
+    Question questions[] = {
+        {"Which operation removes an element from the front of the queue?", {"Enqueue", "Dequeue", "Pop", "Push"}, 'b'},
+        {"What are some common of queues in computer science?", {"Sorting Algorithms", "Task Scheduling", "Data Compression", "Encryption"}, 'b'},
+        {"What is the fundamental difference between a queues and a stack data structure?", {"FIFO vs LIFO", "LIFO VS FIFO", "FIFO vs FILO", "FILO vs FIFO"}, 'a'},
+        {"Which of the following is not a common operations of stack?", {"Push", "Pop", " Peek", "Insert"}, 'd'},
+        {"Which of data structure follows a Last-in, First-out (LIFO) principles?" ,{"Queue", "Stack", " Linked list", "Array"}, 'b'},
+    };
+
+    // Initialize score stack and question queue
+    stack<int> score;
+    queue<Question> q;
+    for (int i = 0; i < 5; i++) {
+        q.push(questions[i]);
+    }
+
+    int choice;
+    while (true) {
+        displayMenu();
+        if (cin >> choice) {
+            if (choice == 1) {
+                // Start Quiz
+                while (!q.empty()) {
+                    Question currentQuestion = q.front();
+                    q.pop();
+                    displayQuestion(currentQuestion);
+
+                    char answer;
+                    while (true) {
+                        cout << "Enter your answer (a-d): ";
+                        cin >> answer;
+                        if (tolower(answer) >= 'a' && tolower(answer) <= 'd') {
+                            break;
+                        } else {
+                            handleInvalidInput();
+                        }
+                    }
+
+                    bool correct = checkAnswer(answer, currentQuestion.correctAnswer);
+                    cout << (correct ? "Correct!" : "Incorrect.") << endl;
+                    score.push(correct ? 1 : 0);
+                }
+
+                // Display final score
+                cout << "Your final score is: ";
+                int totalScore = 0;
+                while (!score.empty()) {
+                    totalScore += score.top();
+                    score.pop();
+                }
+                cout << totalScore << "/" << 3 << endl;
+            } else if (choice == 2) {
+                // Exit
+                cout << "Thank you for playing!" << endl;
+                break;
+            } else {
+                handleInvalidInput();
+            }
+        } else {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            handleInvalidInput();
+        }
+    }
+
+    return 0;
+}
